@@ -36,10 +36,15 @@ services:
     volumes:
       - mongo_data:/data/db
     healthcheck:
-      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      test:
+        [
+          "CMD-SHELL",
+          "mongosh -u $$MONGO_INITDB_ROOT_USERNAME -p $$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin --quiet --eval \"db.adminCommand('ping')\"",
+        ]
       interval: 10s
       timeout: 5s
       retries: 10
+      start_period: 30s
 
   qdrant:
     image: qdrant/qdrant:v1.12.4
@@ -97,6 +102,7 @@ services:
       - "8000:8000"
     volumes:
       - ./ml/artifacts:/artifacts:ro
+      - ./data:/data:ro
       - backend_uploads:/app/uploads
     depends_on:
       postgres:
@@ -119,6 +125,8 @@ services:
     <<: *default-env
     ports:
       - "8501:8501"
+    volumes:
+      - ./data:/data:ro
     depends_on:
       - backend
 

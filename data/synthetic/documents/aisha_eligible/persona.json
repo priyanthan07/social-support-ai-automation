@@ -1,0 +1,47 @@
+{
+  "key": "aisha_eligible",
+  "full_name": "Aisha Abdullah Al Mansoori",
+  "emirates_id": "784-1988-1234567-1",
+  "dob": "1988-04-12",
+  "nationality": "United Arab Emirates",
+  "address_id": "Villa 12, Al Wathba, Abu Dhabi",
+  "address_credit": "Villa 12, Al Wathba South, Abu Dhabi",
+  "employment_status": "unemployed",
+  "bank_monthly_credit": 1800,
+  "stated_monthly_income": 1800,
+  "family_size": 6,
+  "num_dependents": 4,
+  "credit_score": 545,
+  "employment_history": [
+    [
+      "Al Noor Trading LLC",
+      "Administrative Assistant",
+      "2015 - 2021"
+    ]
+  ],
+  "education": "High School",
+  "skills": [
+    "MS Office",
+    "Customer Service",
+    "Arabic/English"
+  ],
+  "assets": [
+    [
+      "Savings Account",
+      "Bank",
+      22000
+    ],
+    [
+      "Gold",
+      "Jewelry",
+      15000
+    ]
+  ],
+  "liabilities": [
+    [
+      "Personal Loan",
+      "Bank",
+      60000
+    ]
+  ]
+}

@@ -91,9 +91,10 @@ class Settings(BaseSettings):
     langfuse_secret_key: str = ""
     langfuse_host: str = "https://cloud.langfuse.com"
 
-    # --- ML artifacts + uploads ---
+    # --- ML artifacts + uploads + knowledge base ---
     ml_artifacts_dir: str = "/artifacts"
     upload_dir: str = "/app/uploads"
+    knowledge_base_path: str = "/data/knowledge_base/enablement_programs.json"
 
     # --- Frontend -> backend base URL ---
     backend_api_url: str = "http://localhost:8000"

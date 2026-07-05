@@ -1,0 +1,57 @@
+{
+  "key": "fatima_borderline",
+  "full_name": "Fatima Hassan Al Balushi",
+  "emirates_id": "784-1992-2468101-3",
+  "dob": "1992-01-25",
+  "nationality": "United Arab Emirates",
+  "address_id": "Building 7, Al Qusais, Dubai",
+  "address_credit": "Building 7, Al Qusais, Dubai",
+  "employment_status": "self_employed",
+  "bank_monthly_credit": 7200,
+  "stated_monthly_income": 7200,
+  "family_size": 4,
+  "num_dependents": 2,
+  "credit_score": 640,
+  "employment_history": [
+    [
+      "Self-employed - Home Bakery",
+      "Owner",
+      "2019 - Present"
+    ],
+    [
+      "Spinneys",
+      "Sales Associate",
+      "2014 - 2019"
+    ]
+  ],
+  "education": "Diploma in Business",
+  "skills": [
+    "Baking",
+    "Small Business",
+    "Social Media Marketing"
+  ],
+  "assets": [
+    [
+      "Savings Account",
+      "Bank",
+      65000
+    ],
+    [
+      "Vehicle",
+      "Car",
+      45000
+    ]
+  ],
+  "liabilities": [
+    [
+      "Car Loan",
+      "Bank",
+      30000
+    ],
+    [
+      "Credit Card",
+      "Bank",
+      12000
+    ]
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "key": "omar_noteligible",
+  "full_name": "Omar Khalid Al Suwaidi",
+  "emirates_id": "784-1985-7654321-2",
+  "dob": "1985-09-30",
+  "nationality": "United Arab Emirates",
+  "address_id": "Apartment 1004, Marina Heights, Dubai",
+  "address_credit": "Apartment 1004, Marina Heights, Dubai",
+  "employment_status": "employed",
+  "bank_monthly_credit": 32000,
+  "stated_monthly_income": 28000,
+  "family_size": 3,
+  "num_dependents": 1,
+  "credit_score": 760,
+  "employment_history": [
+    [
+      "Emirates Global Bank",
+      "Senior Manager",
+      "2016 - Present"
+    ],
+    [
+      "Gulf Finance",
+      "Analyst",
+      "2010 - 2016"
+    ]
+  ],
+  "education": "Bachelor of Finance",
+  "skills": [
+    "Financial Analysis",
+    "Leadership",
+    "Risk Management"
+  ],
+  "assets": [
+    [
+      "Primary Residence",
+      "Property",
+      1800000
+    ],
+    [
+      "Investment Portfolio",
+      "Securities",
+      450000
+    ],
+    [
+      "Vehicle",
+      "Car",
+      120000
+    ]
+  ],
+  "liabilities": [
+    [
+      "Mortgage",
+      "Bank",
+      900000
+    ]
+  ]
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "prog-001",
+    "title": "Digital Skills Bootcamp",
+    "category": "upskilling",
+    "description": "Free 12-week bootcamp covering data literacy, spreadsheets, and basic programming for job seekers. Suitable for applicants with limited formal education seeking office or remote work.",
+    "target": "unemployed, low education, career changers",
+    "provider": "National Skills Authority"
+  },
+  {
+    "id": "prog-002",
+    "title": "Vocational Training - Skilled Trades",
+    "category": "upskilling",
+    "description": "Hands-on certification in electrical, plumbing, HVAC, and automotive trades with guaranteed apprenticeship placement. Ideal for applicants preferring practical, high-demand manual professions.",
+    "target": "unemployed, high school, practical learners",
+    "provider": "Technical Institute"
+  },
+  {
+    "id": "prog-003",
+    "title": "Women Returnship Program",
+    "category": "job_matching",
+    "description": "Supported re-entry into the workforce for women after a career break, including refresher training, mentorship, and part-time placements with partner employers.",
+    "target": "women, career break, caregivers, large families",
+    "provider": "Community Development Authority"
+  },
+  {
+    "id": "prog-004",
+    "title": "Small Business & Home Enterprise Grant",
+    "category": "entrepreneurship",
+    "description": "Micro-grants and business coaching for home-based businesses such as baking, tailoring, and handicrafts. Includes licensing support and access to online marketplaces.",
+    "target": "self_employed, home business, low capital",
+    "provider": "Economic Enablement Fund"
+  },
+  {
+    "id": "prog-005",
+    "title": "Career Counseling & Job Placement",
+    "category": "career_counseling",
+    "description": "One-on-one career counseling, CV building, interview coaching, and direct referral to a network of employers actively hiring entry and mid-level staff.",
+    "target": "all job seekers, unemployed, underemployed",
+    "provider": "National Employment Center"
+  },
+  {
+    "id": "prog-006",
+    "title": "Financial Literacy & Debt Management",
+    "category": "financial_literacy",
+    "description": "Workshops on budgeting, saving, and managing debt and credit. Recommended for applicants with high liabilities or low credit scores to improve long-term financial stability.",
+    "target": "high liabilities, low credit score, over-indebted",
+    "provider": "Consumer Protection Department"
+  },
+  {
+    "id": "prog-007",
+    "title": "IT & Cybersecurity Certification",
+    "category": "upskilling",
+    "description": "Subsidized certifications (CompTIA, networking, cybersecurity fundamentals) leading to well-paid technology roles. Suited to applicants with a diploma or degree seeking higher income.",
+    "target": "diploma, bachelor, technology interest",
+    "provider": "Technical Institute"
+  },
+  {
+    "id": "prog-008",
+    "title": "Healthcare Support Worker Training",
+    "category": "upskilling",
+    "description": "Accredited training for nursing assistants, caregivers, and health support roles with high employment demand and immediate placement pathways.",
+    "target": "unemployed, caregiving experience, high school",
+    "provider": "Health Workforce Academy"
+  },
+  {
+    "id": "prog-009",
+    "title": "Youth Employment Fast-Track",
+    "category": "job_matching",
+    "description": "Accelerated placement program for young applicants (under 30) combining a short skills module with a paid 6-month traineeship at partner companies.",
+    "target": "young, recent graduates, first job",
+    "provider": "National Employment Center"
+  },
+  {
+    "id": "prog-010",
+    "title": "Remote Work Enablement",
+    "category": "job_matching",
+    "description": "Training and equipment stipend to enable remote and freelance work for applicants with mobility constraints, disabilities, or caregiving responsibilities.",
+    "target": "disability, caregivers, mobility constraints, remote",
+    "provider": "Community Development Authority"
+  },
+  {
+    "id": "prog-011",
+    "title": "Language & Communication Skills",
+    "category": "upskilling",
+    "description": "Business English and Arabic communication courses to improve employability in customer-facing and administrative roles.",
+    "target": "customer service, administrative, communication gap",
+    "provider": "National Skills Authority"
+  },
+  {
+    "id": "prog-012",
+    "title": "Entrepreneurship Incubator",
+    "category": "entrepreneurship",
+    "description": "Six-month incubator with seed funding, workspace, and mentoring for scalable startup ideas. For applicants with a viable business plan and growth ambition.",
+    "target": "self_employed, business plan, growth, higher education",
+    "provider": "Economic Enablement Fund"
+  }
+]

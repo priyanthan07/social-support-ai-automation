@@ -3,7 +3,7 @@ name = "social-support-ml"
 version = "0.1.0"
 description = "Offline synthetic data generation + scikit-learn training for the Social Support AI prototype"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "scikit-learn>=1.9.0",
     "numpy>=2.5.0",

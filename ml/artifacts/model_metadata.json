@@ -1,0 +1,157 @@
+{
+  "trained_at": "2026-07-04T15:40:53.926229+00:00",
+  "sklearn_version": "1.9.0",
+  "n_samples": 12000,
+  "approval_rate": 0.5903,
+  "numeric_features": [
+    "monthly_income",
+    "income_per_capita",
+    "family_size",
+    "num_dependents",
+    "age",
+    "employment_years",
+    "months_employed_last_2yrs",
+    "total_assets",
+    "total_liabilities",
+    "net_worth",
+    "credit_score"
+  ],
+  "categorical_features": [
+    "employment_status",
+    "housing_status",
+    "education_level",
+    "marital_status",
+    "nationality_group",
+    "has_disability"
+  ],
+  "category_values": {
+    "employment_status": [
+      "employed",
+      "self_employed",
+      "unemployed",
+      "retired",
+      "student"
+    ],
+    "housing_status": [
+      "owned",
+      "rented",
+      "family",
+      "government_housing"
+    ],
+    "education_level": [
+      "none",
+      "high_school",
+      "diploma",
+      "bachelor",
+      "postgraduate"
+    ],
+    "marital_status": [
+      "single",
+      "married",
+      "divorced",
+      "widowed"
+    ],
+    "nationality_group": [
+      "citizen",
+      "resident"
+    ],
+    "has_disability": [
+      "yes",
+      "no"
+    ]
+  },
+  "decision_threshold": 0.5,
+  "review_band": [
+    0.4,
+    0.6
+  ],
+  "poverty_line_per_capita": 4000.0,
+  "max_support_amount": 15000.0,
+  "models": {
+    "primary": "CalibratedClassifierCV(HistGradientBoostingClassifier)",
+    "baseline": "LogisticRegression",
+    "regressor": "HistGradientBoostingRegressor"
+  },
+  "metrics": {
+    "classifier": {
+      "accuracy": 0.8996,
+      "roc_auc": 0.9697,
+      "f1": 0.915,
+      "confusion_matrix": [
+        [
+          862,
+          121
+        ],
+        [
+          120,
+          1297
+        ]
+      ]
+    },
+    "baseline_logreg": {
+      "accuracy": 0.8975,
+      "roc_auc": 0.9687,
+      "f1": 0.9118,
+      "confusion_matrix": [
+        [
+          882,
+          101
+        ],
+        [
+          145,
+          1272
+        ]
+      ]
+    },
+    "regressor": {
+      "mae": 49.54,
+      "r2": 0.9994
+    },
+    "classification_report": {
+      "0": {
+        "precision": 0.8778004073319755,
+        "recall": 0.8769074262461851,
+        "f1-score": 0.87735368956743,
+        "support": 983.0
+      },
+      "1": {
+        "precision": 0.9146685472496474,
+        "recall": 0.9153140437544107,
+        "f1-score": 0.9149911816578483,
+        "support": 1417.0
+      },
+      "accuracy": 0.8995833333333333,
+      "macro avg": {
+        "precision": 0.8962344772908115,
+        "recall": 0.8961107350002979,
+        "f1-score": 0.8961724356126392,
+        "support": 2400.0
+      },
+      "weighted avg": {
+        "precision": 0.8995679716083677,
+        "recall": 0.8995833333333333,
+        "f1-score": 0.8995754921891478,
+        "support": 2400.0
+      }
+    }
+  },
+  "permutation_importance": {
+    "income_per_capita": 0.22966,
+    "has_disability": 0.03416,
+    "num_dependents": 0.0119,
+    "net_worth": 0.00616,
+    "credit_score": 0.00433,
+    "employment_status": 0.00422,
+    "months_employed_last_2yrs": 0.00315,
+    "total_assets": 0.00141,
+    "monthly_income": 0.00078,
+    "employment_years": 0.00045,
+    "total_liabilities": 0.00043,
+    "education_level": 0.00022,
+    "housing_status": 0.0002,
+    "family_size": 0.00011,
+    "age": 6e-05,
+    "nationality_group": 3e-05,
+    "marital_status": -0.00021
+  }
+}
