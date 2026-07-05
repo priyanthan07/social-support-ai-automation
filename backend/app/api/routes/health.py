@@ -6,6 +6,7 @@ from fastapi import APIRouter
 
 from app.core.config import settings
 from app.db import mongo, neo4j, qdrant
+from app.db.session import ping as postgres_ping
 from app.ml.model import get_model
 
 router = APIRouter(tags=["health"])
@@ -20,6 +21,7 @@ def health() -> dict:
 def readiness() -> dict:
     model = get_model()
     core = {
+        "postgres": postgres_ping(),
         "mongodb": mongo.ping(),
         "qdrant": qdrant.ping(),
         "neo4j": neo4j.ping(),

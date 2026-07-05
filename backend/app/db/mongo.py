@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from functools import lru_cache
 from typing import Any
 
-from pymongo import MongoClient
+from pymongo import ASCENDING, DESCENDING, MongoClient
 from pymongo.database import Database
 
 from app.core.config import settings
@@ -16,6 +17,8 @@ logger = get_logger(__name__)
 EXTRACTIONS_COLLECTION = "document_extractions"
 CHAT_COLLECTION = "chat_history"
 
+_chat_indexes_ready = False
+
 
 @lru_cache
 def get_client() -> MongoClient:
@@ -24,6 +27,16 @@ def get_client() -> MongoClient:
 
 def get_db() -> Database:
     return get_client()[settings.mongo_db]
+
+
+def ensure_chat_indexes() -> None:
+    """Create chat history indexes once per process."""
+    global _chat_indexes_ready
+    if _chat_indexes_ready:
+        return
+    coll = get_db()[CHAT_COLLECTION]
+    coll.create_index([("application_id", ASCENDING), ("created_at", DESCENDING)])
+    _chat_indexes_ready = True
 
 
 def save_extraction(application_id: str, doc_type: str, payload: dict[str, Any]) -> str:
@@ -43,14 +56,27 @@ def get_extractions(application_id: str) -> list[dict[str, Any]]:
 
 
 def save_chat_turn(application_id: str, role: str, content: str) -> None:
+    ensure_chat_indexes()
     get_db()[CHAT_COLLECTION].insert_one(
-        {"application_id": application_id, "role": role, "content": content}
+        {
+            "application_id": application_id,
+            "role": role,
+            "content": content,
+            "created_at": datetime.now(timezone.utc),
+        }
     )
 
 
 def get_chat_history(application_id: str, limit: int = 50) -> list[dict[str, Any]]:
+    """Return the most recent ``limit`` turns in chronological order."""
+    ensure_chat_indexes()
     coll = get_db()[CHAT_COLLECTION]
-    docs = list(coll.find({"application_id": application_id}).limit(limit))
+    docs = list(
+        coll.find({"application_id": application_id})
+        .sort([("created_at", DESCENDING), ("_id", DESCENDING)])
+        .limit(limit)
+    )
+    docs.reverse()
     return [{"role": d.get("role"), "content": d.get("content")} for d in docs]
 
 

@@ -10,7 +10,7 @@ from __future__ import annotations
 from collections.abc import Iterator
 from contextlib import contextmanager
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import settings
@@ -47,3 +47,13 @@ def session_scope() -> Iterator[Session]:
         raise
     finally:
         db.close()
+
+
+def ping() -> bool:
+    """Return True when PostgreSQL accepts a simple query."""
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        return True
+    except Exception:  # pragma: no cover
+        return False

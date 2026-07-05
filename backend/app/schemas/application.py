@@ -84,3 +84,13 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     application_id: UUID
     answer: str
+
+
+class ChatTurn(BaseModel):
+    role: str
+    content: str
+
+
+class ChatHistoryResponse(BaseModel):
+    application_id: UUID
+    turns: list[ChatTurn] = Field(default_factory=list)

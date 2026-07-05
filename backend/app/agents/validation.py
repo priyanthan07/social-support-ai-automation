@@ -1,40 +1,21 @@
-"""Validation agent: cross-document consistency + household graph + Reflexion.
-
-Deterministically detects discrepancies (address, income, name) across the
-form and extracted documents, models the household in Neo4j (surfacing shared
-addresses = possible duplicates), then runs an LLM Reflexion pass that reviews
-the flags and writes a concise officer-facing summary.
-"""
+"""Validation agent: cross-document consistency + household graph + ReAct + Reflexion."""
 
 from __future__ import annotations
-
-import re
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.agents.common import set_status
-from app.agents.prompts import VALIDATION_REFLEXION_SYSTEM
+from app.agents.prompts import VALIDATION_REACT_SYSTEM, VALIDATION_REFLEXION_SYSTEM
+from app.agents.react_loop import run_react_loop
 from app.agents.state import AgentState
+from app.agents.text_match import text_overlap
+from app.agents.tools.validation_tools import ValidationToolContext, build_validation_tools
 from app.core.enums import ApplicationStatus, DocumentType
 from app.core.logging import get_logger
 from app.db import neo4j
 from app.llm import client as llm
 
 logger = get_logger(__name__)
-
-
-def _normalize(text: str | None) -> set[str]:
-    if not text:
-        return set()
-    tokens = re.split(r"[\s,./-]+", str(text).lower())
-    return {t for t in tokens if len(t) > 2}
-
-
-def _overlap(a: str | None, b: str | None) -> float:
-    ta, tb = _normalize(a), _normalize(b)
-    if not ta or not tb:
-        return 1.0  # cannot compare -> not a mismatch
-    return len(ta & tb) / len(ta | tb)
 
 
 def _by_type(extractions: list[dict]) -> dict[str, dict]:
@@ -54,11 +35,10 @@ def validation_node(state: AgentState, config: dict | None = None) -> dict:
 
     flags: list[dict] = []
 
-    # --- Address consistency (Emirates ID vs credit report vs form) ---
     addr_id = eid.get("address")
     addr_credit = credit.get("address")
     addr_form = form.get("address")
-    if addr_id and addr_credit and _overlap(addr_id, addr_credit) < 0.6:
+    if addr_id and addr_credit and text_overlap(addr_id, addr_credit) < 0.6:
         flags.append(
             {
                 "field": "address",
@@ -66,7 +46,7 @@ def validation_node(state: AgentState, config: dict | None = None) -> dict:
                 "message": f"Address differs between Emirates ID ('{addr_id}') and credit report ('{addr_credit}').",
             }
         )
-    if addr_id and addr_form and _overlap(addr_id, addr_form) < 0.5:
+    if addr_id and addr_form and text_overlap(addr_id, addr_form) < 0.5:
         flags.append(
             {
                 "field": "address",
@@ -75,7 +55,6 @@ def validation_node(state: AgentState, config: dict | None = None) -> dict:
             }
         )
 
-    # --- Income consistency (form vs bank statement) ---
     try:
         form_income = float(form.get("monthly_income") or 0)
         bank_income = float(bank.get("average_monthly_income") or 0)
@@ -95,8 +74,7 @@ def validation_node(state: AgentState, config: dict | None = None) -> dict:
     except (ValueError, TypeError):
         pass
 
-    # --- Name consistency (Emirates ID vs resume) ---
-    if eid.get("name") and resume.get("name") and _overlap(eid.get("name"), resume.get("name")) < 0.4:
+    if eid.get("name") and resume.get("name") and text_overlap(eid.get("name"), resume.get("name")) < 0.4:
         flags.append(
             {
                 "field": "name",
@@ -105,9 +83,9 @@ def validation_node(state: AgentState, config: dict | None = None) -> dict:
             }
         )
 
-    # --- Household graph (Neo4j) + duplicate-address detection ---
     household: dict = {}
     address = addr_id or addr_form
+    shared: list[str] = []
     try:
         family_members = form.get("family_members") or []
         neo4j.upsert_household(app_id, state.get("applicant_name", ""), address, family_members)
@@ -124,25 +102,72 @@ def validation_node(state: AgentState, config: dict | None = None) -> dict:
     except Exception as exc:  # pragma: no cover
         logger.warning("Neo4j household step failed: %s", exc)
 
-    # --- Reflexion: LLM reviews the flags and writes a summary ---
-    summary = _reflexion_summary(flags, config)
+    summary = _validation_summary(
+        state, flags, household, address, by_type, form, config, shared
+    )
 
     return {"validation_flags": flags, "validation_summary": summary, "household": household}
 
 
-def _reflexion_summary(flags: list[dict], config: dict | None) -> str:
+def _validation_summary(
+    state: AgentState,
+    flags: list[dict],
+    household: dict,
+    address: str | None,
+    by_type: dict[str, dict],
+    form: dict,
+    config: dict | None,
+    shared_address_applicants: list[str],
+) -> str:
     if not flags:
         return "All documents are consistent. No discrepancies detected."
+
+    flag_text = "\n".join(f"- [{f['severity']}] {f['field']}: {f['message']}" for f in flags)
+    ctx = ValidationToolContext(
+        flags=flags,
+        form_data=form,
+        extractions_by_type=by_type,
+        application_id=state["application_id"],
+        household=household,
+        address=address,
+        shared_address_applicants=shared_address_applicants,
+    )
+    tools = build_validation_tools(ctx)
+
+    try:
+        summary = run_react_loop(
+            system_prompt=VALIDATION_REACT_SYSTEM,
+            user_prompt=(
+                f"Applicant: {state.get('applicant_name', '')}\n"
+                f"Detected flags:\n{flag_text}\n\n"
+                "Use tools to verify evidence, then write a concise 2-3 sentence officer summary."
+            ),
+            tools=tools,
+            config=config,
+        )
+    except Exception as exc:  # pragma: no cover
+        logger.warning("Validation ReAct loop failed: %s", exc)
+        summary = f"{len(flags)} potential discrepancy(ies) detected; manual review advised."
+
+    return _reflexion_critique(summary, flags, config)
+
+
+def _reflexion_critique(summary: str, flags: list[dict], config: dict | None) -> str:
+    """Optional self-critique pass on the ReAct-produced summary."""
     flag_text = "\n".join(f"- [{f['severity']}] {f['field']}: {f['message']}" for f in flags)
     try:
-        return llm.chat(
+        refined = llm.chat(
             [
                 SystemMessage(content=VALIDATION_REFLEXION_SYSTEM),
-                HumanMessage(content=f"Detected flags:\n{flag_text}"),
+                HumanMessage(
+                    content=f"Flags:\n{flag_text}\n\nDraft summary:\n{summary}\n\n"
+                    "Review the draft. Return an improved 2-3 sentence summary only."
+                ),
             ],
             temperature=0.2,
             config=config,
         ).strip()
+        return refined or summary
     except Exception as exc:  # pragma: no cover
-        logger.warning("Reflexion summary failed: %s", exc)
-        return f"{len(flags)} potential discrepancy(ies) detected; manual review advised."
+        logger.warning("Reflexion critique failed: %s", exc)
+        return summary

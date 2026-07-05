@@ -39,6 +39,19 @@ def get_chat_model(temperature: float = 0.1, json_mode: bool = False) -> ChatOll
 
 
 @lru_cache
+def get_tool_chat_model(temperature: float = 0.2) -> ChatOllama:
+    """Chat model for ReAct tool loops (never JSON mode)."""
+    return ChatOllama(
+        model=settings.ollama_llm_model,
+        base_url=settings.ollama_base_url,
+        temperature=temperature,
+        format=None,
+        num_ctx=8192,
+        client_kwargs={"timeout": settings.ollama_request_timeout},
+    )
+
+
+@lru_cache
 def get_embeddings() -> OllamaEmbeddings:
     return OllamaEmbeddings(
         model=settings.ollama_embed_model,
@@ -66,6 +79,12 @@ def chat(
     with _llm_semaphore:
         response = model.invoke(messages, config=config)
     return response.content if isinstance(response.content, str) else str(response.content)
+
+
+def invoke_with_tools(model, messages: list[BaseMessage], config: dict | None = None):
+    """Invoke a tool-bound chat model and return the full AIMessage."""
+    with _llm_semaphore:
+        return model.invoke(messages, config=config)
 
 
 def embed_documents(texts: list[str]) -> list[list[float]]:

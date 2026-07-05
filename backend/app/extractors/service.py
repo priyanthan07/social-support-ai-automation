@@ -16,6 +16,26 @@ from app.extractors.ocr import IMAGE_EXTENSIONS, ocr_image
 from app.extractors.pdf import extract_pdf
 
 
+def _serialize_pdf_tables(tables: list[list]) -> str:
+    """Convert pdfplumber tables into compact text for LLM structuring."""
+    if not tables:
+        return ""
+    lines = ["\n--- PDF tables ---"]
+    for index, table in enumerate(tables, start=1):
+        lines.append(f"\nTable {index}:")
+        for row in table:
+            cells = [str(cell or "").strip() for cell in row]
+            lines.append(" | ".join(cells))
+    return "\n".join(lines)
+
+
+def _append_pdf_tables(raw_text: str, tables: list[list]) -> str:
+    appendix = _serialize_pdf_tables(tables)
+    if not appendix:
+        return raw_text
+    return f"{raw_text}{appendix}" if raw_text else appendix.lstrip("\n")
+
+
 def extract_document(
     doc_type: str, path: str | Path, config: dict | None = None
 ) -> ExtractionResult:
@@ -47,6 +67,7 @@ def extract_document(
     # --- PDF / text: pdfplumber then LLM structuring ---
     if ext == ".pdf":
         raw_text, tables = extract_pdf(path)
+        raw_text = _append_pdf_tables(raw_text, tables)
     else:
         raw_text = path.read_text(encoding="utf-8", errors="ignore") if path.exists() else ""
 
