@@ -20,7 +20,7 @@ flowchart TD
     API[FastAPI Backend]
     subgraph graph [LangGraph Supervisor]
         EX[Extraction Agent]
-        VAL[Validation Agent + Reflexion]
+        VAL[Validation Agent + ReAct + Reflexion]
         ELIG[Eligibility Agent]
         REC[Recommendation Agent]
     end
@@ -49,7 +49,7 @@ flowchart TD
 1. Applicant submits form + documents via Streamlit.
 2. FastAPI stores files and enqueues LangGraph processing (BackgroundTasks, non-blocking).
 3. **Extraction Agent:** OCR (Tesseract) / PDF (pdfplumber) / Excel (pandas) → LLM JSON structuring → MongoDB.
-4. **Validation Agent:** cross-checks address, income, names; builds household graph in Neo4j; Reflexion summary.
+4. **Validation Agent:** cross-checks address, income, names; builds household graph in Neo4j; bounded **ReAct tool loop** (read-only tools to verify flags) followed by a Reflexion self-critique on the officer summary.
 5. **Eligibility Agent:** policy gates → scikit-learn score → LLM narrative (never decides eligibility).
 6. **Recommendation Agent:** Qdrant RAG over enablement KB → LLM personalized program suggestions.
 7. Decision persisted to PostgreSQL; UI polls status; Langfuse traces every LLM/agent step.
@@ -64,7 +64,7 @@ flowchart TD
 | **FastAPI** | Model serving | Async-capable, OpenAPI docs, production-grade; brief requirement. |
 | **Streamlit** | Demo UI | Brief requirement; rapid custom-themed multi-page UI. |
 | **LangGraph** | Agent orchestration | Explicit state machine — auditable routing for government decisions; best Langfuse integration among options. |
-| **ReAct + Reflexion** | Reasoning | ReAct for tool-using agents; Reflexion on validation to reduce false-positive flags. |
+| **ReAct + Reflexion** | Reasoning | Validation agent runs a bounded ReAct loop with read-only tools (`list_detected_flags`, `get_extraction`, etc.); loop ends when the model returns no tool call. Reflexion then critiques the summary. Eligibility decisions remain ML-only. |
 | **Ollama** | Local LLM hosting | Brief requirement; CPU-friendly prototype; swappable to vLLM via OpenAI-compatible client. |
 | **scikit-learn** | Eligibility decision | Deterministic, auditable, feature-importance for bias control; brief requirement. |
 | **PostgreSQL** | Structured state | Applications, decisions, audit log; Alembic migrations. |
@@ -107,7 +107,7 @@ flowchart TD
 
 **Layered hybrid:**
 
-1. **Hard policy gates** (wealth ceiling, income per capita, missing documents) — can force soft-decline or needs-review.
+1. **Hard policy gates** (wealth ceiling, income per capita, missing documents) — can force soft-decline or needs-review. Only **Emirates ID** is required for auto-decide (`MIN_REQUIRED_DOCS = {"emirates_id"}`); other documents improve confidence.
 2. **scikit-learn calibrated classifier** — owns approve/soft-decline probability and support-amount regressor.
 3. **LLM** — explains the decision and generates enablement recommendations only; never computes eligibility.
 
@@ -175,7 +175,7 @@ Storage: raw paths in Postgres/MongoDB; vectors in Qdrant; relationships in Neo4
 | Pain point | How addressed |
 |------------|---------------|
 | Manual data gathering | Automated OCR/PDF/Excel extraction + LLM structuring |
-| Semi-automated validation | Validation Agent with cross-document checks + Reflexion |
+| Semi-automated validation | Validation Agent with cross-document checks + ReAct tool loop + Reflexion |
 | Inconsistent information | Address/income/name reconciliation + Neo4j graph |
 | Time-consuming reviews | End-to-end pipeline in minutes; officer dashboard for exceptions |
 | Subjective decision-making | scikit-learn model + feature importance + policy gates |

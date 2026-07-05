@@ -58,11 +58,17 @@ docker compose up -d --build
 
 ### 4. Bootstrap Ollama models + knowledge base
 
+Run this **after** step 2 (ML training) and step 3 (Docker stack). It pulls Ollama models and seeds the Qdrant knowledge base — it does **not** re-run ML training.
+
 ```powershell
 .\scripts\bootstrap.ps1
 ```
 
 This pulls the local LLM and embedding models into Ollama and seeds the Qdrant enablement knowledge base.
+
+**Note:** The validation agent uses a ReAct tool-calling loop with Ollama. The default `qwen2.5:3b-instruct` model should support native tool calls; if tool execution fails in your environment, try a larger tool-capable instruct model.
+
+**Policy:** Only **Emirates ID** is mandatory for an automatic eligibility decision (`MIN_REQUIRED_DOCS`). Other documents improve accuracy but missing uploads may route the case to manual review rather than auto-decline.
 
 ### 5. Open the application
 
@@ -76,8 +82,8 @@ This pulls the local LLM and embedding models into Ollama and seeds the Qdrant e
 ## Demo workflow
 
 1. Go to **Apply** in the Streamlit UI.
-2. Fill the form and upload the sample documents from `data/synthetic/documents/aisha_eligible/`.
-3. Click **Submit Application** — processing starts in the background.
+2. Optionally click **Load demo (Aisha — eligible persona + files)** to pre-fill the form and load any generated demo documents from `data/synthetic/documents/aisha_eligible/`.
+3. Fill the form (including household members), upload documents, and click **Submit Application** — processing starts in the background.
 4. Open **Live Processing** to watch status transitions (`received → extracting → validating → scoring → recommending → decided`).
 5. View the **Decision** page for approve/soft-decline, support amount, and enablement recommendations.
 6. Use **Assistant** to ask grounded questions about the case.

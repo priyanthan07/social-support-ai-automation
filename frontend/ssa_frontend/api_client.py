@@ -62,3 +62,12 @@ class ApiClient:
         )
         r.raise_for_status()
         return r.json()
+
+    def get_chat_history(self, application_id: str, limit: int = 50) -> list[dict[str, str]]:
+        r = requests.get(
+            self._url(f"/chat/history/{application_id}"),
+            params={"limit": limit},
+            timeout=self.timeout,
+        )
+        r.raise_for_status()
+        return r.json().get("turns", [])

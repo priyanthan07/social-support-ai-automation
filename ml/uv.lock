@@ -113,18 +113,6 @@ wheels = [
 ]
 
 [[package]]
-name = "faker"
-version = "40.28.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "tzdata", marker = "sys_platform == 'win32'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/cc/2d/3ead106cef42eab305e15f9c089dcc68a40387d5ce04af18585af4ebbb44/faker-40.28.1.tar.gz", hash = "sha256:2a63fb51abab8790636d4030a094cf942404cbccc9c288d1cad70e2e3e9ecd58", size = 2022717, upload-time = "2026-07-01T22:23:43.763Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/92/a6/6111b9f13c1564b0e2f5dbeeb611fd00dc731e6add2336f62b798598c73d/faker-40.28.1-py3-none-any.whl", hash = "sha256:e8d3f5c469100a553d246dce7937c291308068a5ec6c9c3a228d7878b50720be", size = 2061052, upload-time = "2026-07-01T22:23:41.946Z" },
-]
-
-[[package]]
 name = "fonttools"
 version = "4.63.0"
 source = { registry = "https://pypi.org/simple" }
@@ -700,7 +688,6 @@ name = "social-support-ml"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "faker" },
     { name = "fpdf2" },
     { name = "joblib" },
     { name = "matplotlib" },
@@ -718,7 +705,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "faker", specifier = ">=40.28.1" },
     { name = "fpdf2", specifier = ">=2.8.7" },
     { name = "joblib", specifier = ">=1.5.3" },
     { name = "matplotlib", specifier = ">=3.11.0" },
