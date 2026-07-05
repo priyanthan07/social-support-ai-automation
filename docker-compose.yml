@@ -60,6 +60,8 @@ services:
     container_name: ssa_neo4j
     restart: unless-stopped
     <<: *default-env
+    environment:
+      NEO4J_server_config_strict__validation_enabled: "false"
     ports:
       - "7474:7474"
       - "7687:7687"
