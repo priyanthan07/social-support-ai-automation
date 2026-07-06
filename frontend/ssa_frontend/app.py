@@ -33,6 +33,11 @@ DEMO_DOC_MAP = {
     "assets_liabilities": ("assets_liabilities.xlsx", "assets_liabilities"),
     "credit_report": ("credit_report.pdf", "credit_report"),
 }
+DEMO_PERSONAS = {
+    "Aisha — eligible": "aisha_eligible",
+    "Omar — not eligible": "omar_noteligible",
+    "Fatima — borderline": "fatima_borderline",
+}
 
 if "application_id" not in st.session_state:
     st.session_state.application_id = None
@@ -46,15 +51,15 @@ if "chat_loaded_for" not in st.session_state:
     st.session_state.chat_loaded_for = None
 
 
-def _demo_dir_path() -> Path:
-    demo_dir = Path("/data/synthetic/documents/aisha_eligible")
+def _demo_dir_path(persona_dir: str) -> Path:
+    demo_dir = Path(f"/data/synthetic/documents/{persona_dir}")
     if not demo_dir.exists():
         demo_dir = (
             Path(__file__).resolve().parents[2]
             / "data"
             / "synthetic"
             / "documents"
-            / "aisha_eligible"
+            / persona_dir
         )
     return demo_dir
 
@@ -97,8 +102,8 @@ def _employment_years_from_history(history: list) -> float:
     return float(total)
 
 
-def _load_demo_assets() -> None:
-    demo_dir = _demo_dir_path()
+def _load_demo_assets(persona_dir: str) -> None:
+    demo_dir = _demo_dir_path(persona_dir)
     if not demo_dir.exists():
         st.error(f"Demo directory not found: {demo_dir}")
         return
@@ -290,15 +295,15 @@ if page == "Apply":
         loaded = ", ".join(st.session_state.demo_files.keys())
         st.info(f"Demo files loaded in session (used on submit if upload empty): {loaded}")
 
-    demo_dir = _demo_dir_path()
+    demo_label = st.selectbox("Choose a demo persona", list(DEMO_PERSONAS.keys()))
+    persona_dir = DEMO_PERSONAS[demo_label]
+    demo_dir = _demo_dir_path(persona_dir)
     if demo_dir.exists():
-        if st.button("Load demo (Aisha — eligible persona + files)"):
-            _load_demo_assets()
+        if st.button(f"Load demo ({demo_label} — persona + files)"):
+            _load_demo_assets(persona_dir)
             if st.session_state.demo_files:
                 loaded = ", ".join(st.session_state.demo_files.keys())
-                st.success(
-                    f"Demo persona and documents loaded ({loaded}). Review the form and submit."
-                )
+                st.success(f"Demo persona and documents loaded ({loaded}). Review the form and submit.")
             else:
                 st.warning(
                     "Demo persona loaded, but no document files found. "
@@ -306,6 +311,8 @@ if page == "Apply":
                     "or upload documents manually before submitting."
                 )
             st.rerun()
+    else:
+        st.info(f"Demo files for {demo_label} not found at {demo_dir}.")
 
     if st.button("Submit Application", type="primary", use_container_width=True):
         if not applicant_name.strip():
