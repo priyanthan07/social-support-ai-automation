@@ -18,7 +18,7 @@ flowchart TD
     User([Applicant / Case Officer])
     UI[Streamlit Custom UI]
     API[FastAPI Backend]
-    subgraph graph [LangGraph Supervisor]
+    subgraph orchestrator [LangGraph Supervisor]
         EX[Extraction Agent]
         VAL[Validation Agent + ReAct + Reflexion]
         ELIG[Eligibility Agent]
@@ -34,14 +34,14 @@ flowchart TD
     OLL[Ollama LLM + embeddings]
     LF[Langfuse Cloud]
 
-    User --> UI --> API --> graph
+    User --> UI --> API --> orchestrator
     EX --> MG
     VAL --> NEO
     ELIG --> ML
     ELIG --> PG
     REC --> QD
-    graph --> OLL
-    graph -.trace.-> LF
+    orchestrator  --> OLL
+    orchestrator  -.trace.-> LF
 ```
 
 ### Data flow
