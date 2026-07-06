@@ -1,7 +1,8 @@
-"""Recommendation agent: RAG over the Qdrant enablement knowledge base.
+"""
+    Recommendation agent: RAG over the Qdrant enablement knowledge base.
 
-Retrieves the most relevant economic-enablement programs for the applicant's
-profile and asks the LLM to produce 3 personalized recommendations.
+    Retrieves the most relevant economic-enablement programs for the applicant's
+    profile and asks the LLM to produce 3 personalized recommendations.
 """
 
 from __future__ import annotations

@@ -1,6 +1,6 @@
-"""Data-access layer for applications, documents, decisions, and audit log.
-
-Contains no business logic -- only persistence operations against PostgreSQL.
+"""
+    Data-access layer for applications, documents, decisions, and audit log.
+    Contains no business logic -- only persistence operations against PostgreSQL.
 """
 
 from __future__ import annotations

@@ -3,11 +3,11 @@
 Run:  uv run python -m ssa_ml.train
 
 Produces (in ml/artifacts/):
-    eligibility_classifier.joblib        -- calibrated HistGradientBoosting pipeline
-    eligibility_baseline_logreg.joblib   -- interpretable LogisticRegression baseline
-    support_amount_regressor.joblib      -- HistGradientBoosting regressor
-    model_metadata.json                  -- schema, metrics, permutation importances
-    feature_importance.png               -- explainability plot
+    eligibility_classifier.joblib        - calibrated HistGradientBoosting pipeline
+    eligibility_baseline_logreg.joblib   - interpretable LogisticRegression baseline
+    support_amount_regressor.joblib      - HistGradientBoosting regressor
+    model_metadata.json                  - schema, metrics, permutation importances
+    feature_importance.png               - explainability plot
 """
 
 from __future__ import annotations

@@ -1,4 +1,4 @@
-# Social Support AI -- ML training project
+# Social Support AI - ML training project
 
 Offline project that:
 
