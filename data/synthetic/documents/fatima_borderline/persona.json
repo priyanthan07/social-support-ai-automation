@@ -11,6 +11,20 @@
   "stated_monthly_income": 7200,
   "family_size": 4,
   "num_dependents": 2,
+  "family_members": [
+    {
+      "name": "Ahmed Al Balushi",
+      "relation": "spouse"
+    },
+    {
+      "name": "Noor Al Balushi",
+      "relation": "child"
+    },
+    {
+      "name": "Zayed Al Balushi",
+      "relation": "child"
+    }
+  ],
   "credit_score": 640,
   "employment_history": [
     [

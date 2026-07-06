@@ -11,6 +11,28 @@
   "stated_monthly_income": 1800,
   "family_size": 6,
   "num_dependents": 4,
+  "family_members": [
+    {
+      "name": "Khalid Al Mansoori",
+      "relation": "spouse"
+    },
+    {
+      "name": "Mariam Al Mansoori",
+      "relation": "child"
+    },
+    {
+      "name": "Sara Al Mansoori",
+      "relation": "child"
+    },
+    {
+      "name": "Yousef Al Mansoori",
+      "relation": "child"
+    },
+    {
+      "name": "Hamdan Al Mansoori",
+      "relation": "child"
+    }
+  ],
   "credit_score": 545,
   "employment_history": [
     [

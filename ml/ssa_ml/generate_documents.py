@@ -42,6 +42,13 @@ PERSONAS: list[dict] = [
         "stated_monthly_income": 1800,
         "family_size": 6,
         "num_dependents": 4,
+        "family_members": [
+            {"name": "Khalid Al Mansoori", "relation": "spouse"},
+            {"name": "Mariam Al Mansoori", "relation": "child"},
+            {"name": "Sara Al Mansoori", "relation": "child"},
+            {"name": "Yousef Al Mansoori", "relation": "child"},
+            {"name": "Hamdan Al Mansoori", "relation": "child"},
+        ],
         "credit_score": 545,
         "employment_history": [
             ("Al Noor Trading LLC", "Administrative Assistant", "2015 - 2021"),
@@ -64,6 +71,10 @@ PERSONAS: list[dict] = [
         "stated_monthly_income": 28000,   # mismatch vs bank statement
         "family_size": 3,
         "num_dependents": 1,
+        "family_members": [
+            {"name": "Layla Al Suwaidi", "relation": "spouse"},
+            {"name": "Khalid Al Suwaidi", "relation": "child"},
+        ],
         "credit_score": 760,
         "employment_history": [
             ("Emirates Global Bank", "Senior Manager", "2016 - Present"),
@@ -91,6 +102,11 @@ PERSONAS: list[dict] = [
         "stated_monthly_income": 7200,
         "family_size": 4,
         "num_dependents": 2,
+        "family_members": [
+            {"name": "Ahmed Al Balushi", "relation": "spouse"},
+            {"name": "Noor Al Balushi", "relation": "child"},
+            {"name": "Zayed Al Balushi", "relation": "child"},
+        ],
         "credit_score": 640,
         "employment_history": [
             ("Self-employed - Home Bakery", "Owner", "2019 - Present"),

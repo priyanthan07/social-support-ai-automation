@@ -11,6 +11,16 @@
   "stated_monthly_income": 28000,
   "family_size": 3,
   "num_dependents": 1,
+  "family_members": [
+    {
+      "name": "Layla Al Suwaidi",
+      "relation": "spouse"
+    },
+    {
+      "name": "Khalid Al Suwaidi",
+      "relation": "child"
+    }
+  ],
   "credit_score": 760,
   "employment_history": [
     [
