@@ -1,6 +1,6 @@
 # Social Support Application Workflow Automation
 
-An AI prototype that automates social-support eligibility decisions for a government social security department. Applicants submit an interactive form plus documents (Emirates ID, bank statement, resume, assets/liabilities Excel, credit report); a **LangGraph** multi-agent workflow extracts, validates, scores (with a local **scikit-learn** model), and recommends a decision plus economic-enablement options — in minutes, fully locally hosted, with end-to-end **Langfuse** observability.
+An AI prototype that automates social-support eligibility decisions for a government social security department. Applicants submit an interactive form plus documents (Emirates ID, bank statement, resume, assets/liabilities Excel, credit report); a **LangGraph** multi-agent workflow extracts, validates, scores (with a local **scikit-learn** model), and recommends a decision plus economic-enablement options - in minutes, fully locally hosted, with end-to-end **Langfuse** observability.
 
 ## Architecture (high level)
 
