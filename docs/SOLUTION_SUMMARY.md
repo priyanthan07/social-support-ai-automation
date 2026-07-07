@@ -1,4 +1,4 @@
-# Solution Summary — Social Support Application Workflow Automation
+# Solution Summary - Social Support Application Workflow Automation
 
 **Version:** 0.1.0 prototype  
 **Date:** July 2026
@@ -7,7 +7,7 @@
 
 ## 1. Executive summary
 
-This prototype automates the government social-support application workflow: multimodal document ingestion, cross-document validation, deterministic eligibility scoring via scikit-learn, and personalized economic-enablement recommendations via RAG — orchestrated by a LangGraph multi-agent pipeline with full Langfuse observability. The target is near-real-time decisions (minutes, not 5–20 days) while maintaining auditability and fairness.
+This prototype automates the government social-support application workflow: multimodal document ingestion, cross-document validation, deterministic eligibility scoring via scikit-learn, and personalized economic-enablement recommendations via RAG - orchestrated by a LangGraph multi-agent pipeline with full Langfuse observability. The target is near-real-time decisions (minutes, not 5–20 days) while maintaining auditability and fairness.
 
 ---
 
@@ -63,7 +63,7 @@ flowchart TD
 | **Python + uv** | Language / packaging | Brief requirement; uv gives reproducible lockfiles and fast Docker builds. |
 | **FastAPI** | Model serving | Async-capable, OpenAPI docs, production-grade; brief requirement. |
 | **Streamlit** | Demo UI | Brief requirement; rapid custom-themed multi-page UI. |
-| **LangGraph** | Agent orchestration | Explicit state machine — auditable routing for government decisions; best Langfuse integration among options. |
+| **LangGraph** | Agent orchestration | Explicit state machine - auditable routing for government decisions; best Langfuse integration among options. |
 | **ReAct + Reflexion** | Reasoning | Validation agent runs a bounded ReAct loop with read-only tools (`list_detected_flags`, `get_extraction`, etc.); loop ends when the model returns no tool call. Reflexion then critiques the summary. Eligibility decisions remain ML-only. |
 | **Ollama** | Local LLM hosting | Brief requirement; CPU-friendly prototype; swappable to vLLM via OpenAI-compatible client. |
 | **scikit-learn** | Eligibility decision | Deterministic, auditable, feature-importance for bias control; brief requirement. |
@@ -107,9 +107,9 @@ flowchart TD
 
 **Layered hybrid:**
 
-1. **Hard policy gates** (wealth ceiling, income per capita, missing documents) — can force soft-decline or needs-review. Only **Emirates ID** is required for auto-decide (`MIN_REQUIRED_DOCS = {"emirates_id"}`); other documents improve confidence.
-2. **scikit-learn calibrated classifier** — owns approve/soft-decline probability and support-amount regressor.
-3. **LLM** — explains the decision and generates enablement recommendations only; never computes eligibility.
+1. **Hard policy gates** (wealth ceiling, income per capita, missing documents) - can force soft-decline or needs-review. Only **Emirates ID** is required for auto-decide (`MIN_REQUIRED_DOCS = {"emirates_id"}`); other documents improve confidence.
+2. **scikit-learn calibrated classifier** - owns approve/soft-decline probability and support-amount regressor.
+3. **LLM** - explains the decision and generates enablement recommendations only; never computes eligibility.
 
 This ensures consistency, determinism, and auditability while leveraging GenAI for language tasks.
 

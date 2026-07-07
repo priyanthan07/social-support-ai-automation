@@ -1,4 +1,4 @@
-# Social Support AI -- Backend
+# Social Support AI - Backend
 
 FastAPI service exposing the application intake, document upload, processing,
 status/decision, and chat endpoints. The AI workflow is implemented as a

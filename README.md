@@ -58,7 +58,7 @@ docker compose up -d --build
 
 ### 4. Bootstrap Ollama models + knowledge base
 
-Run this **after** step 2 (ML training) and step 3 (Docker stack). It pulls Ollama models and seeds the Qdrant knowledge base — it does **not** re-run ML training.
+Run this **after** step 2 (ML training) and step 3 (Docker stack). It pulls Ollama models and seeds the Qdrant knowledge base - it does **not** re-run ML training.
 
 ```powershell
 .\scripts\bootstrap.ps1
@@ -82,8 +82,8 @@ This pulls the local LLM and embedding models into Ollama and seeds the Qdrant e
 ## Demo workflow
 
 1. Go to **Apply** in the Streamlit UI.
-2. Optionally click **Load demo (Aisha — eligible persona + files)** to pre-fill the form and load any generated demo documents from `data/synthetic/documents/aisha_eligible/`.
-3. Fill the form (including household members), upload documents, and click **Submit Application** — processing starts in the background.
+2. Optionally click **Load demo (Aisha - eligible persona + files)** to pre-fill the form and load any generated demo documents from `data/synthetic/documents/aisha_eligible/`.
+3. Fill the form (including household members), upload documents, and click **Submit Application** - processing starts in the background.
 4. Open **Live Processing** to watch status transitions (`received → extracting → validating → scoring → recommending → decided`).
 5. View the **Decision** page for approve/soft-decline, support amount, and enablement recommendations.
 6. Use **Assistant** to ask grounded questions about the case.
